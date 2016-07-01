@@ -25,39 +25,37 @@
 #define Relay_7  8
 #define Relay_8  9
 
+static int relays[8] = {
+  Relay_1, Relay_2, Relay_
+
+
 #include <Serial.h> 
 //int byte = 33; 
+void relayOnOff(int relay, int delay = SHORT_DELAY, delayCount = 1)
+{
+  digitalWrite(relay, RELAY_ON); // qtr
 
-void setup() {
+  delay(delayCount * delay);
+  digitalWrite(relay, RELAY_OFF);
+}
+
+void setup()
+{
   // put your setup code here, to run once:
-//digitalWrite(Relay, HIGH);
-//pinMode(Relay, OUTPUT);
-//   Bridge.begin();
-//  Console.begin(); 
 //-------( Initialize Pins so relays are inactive at reset)----
-  digitalWrite(Relay_1, RELAY_OFF);
-  digitalWrite(Relay_2, RELAY_OFF);
-  digitalWrite(Relay_3, RELAY_OFF);
-  digitalWrite(Relay_4, RELAY_OFF);  
-  digitalWrite(Relay_5, RELAY_OFF);
-  digitalWrite(Relay_6, RELAY_OFF);
-  digitalWrite(Relay_7, RELAY_OFF);
-  digitalWrite(Relay_8, RELAY_OFF);  
+  all_off();
   
 //---( THEN set pins as outputs )----  
-  pinMode(Relay_1, OUTPUT);   
-  pinMode(Relay_2, OUTPUT);  
-  pinMode(Relay_3, OUTPUT);  
-  pinMode(Relay_4, OUTPUT);    
-  pinMode(Relay_5, OUTPUT);   
-  pinMode(Relay_6, OUTPUT);  
-  pinMode(Relay_7, OUTPUT);  
-  pinMode(Relay_8, OUTPUT);    
+  for (auto relay : relays)
+  {
+    pinMode(relay, OUTPUT);   
+  }   
 
   delay(1000); //Check that all relays are inactive at Reset
 
   Serial.begin(9600);
-   while (!Serial) {
+  while (!Serial)
+  {
     ; // wait for Serial port to connect.
   }
 
@@ -67,95 +65,55 @@ void setup() {
 
 // shave and a haircut
 
-    digitalWrite(Relay_1, RELAY_ON); // qtr
-    delay(SHORT_DELAY);
-    delay(SHORT_DELAY);
-    digitalWrite(Relay_1, RELAY_OFF); // 8th
-    delay(SHORT_DELAY);
-    digitalWrite(Relay_1, RELAY_ON); // 8th 
-    delay(SHORT_DELAY);
-    digitalWrite(Relay_1, RELAY_OFF); // qtr
-    delay(SHORT_DELAY);
-    delay(SHORT_DELAY);
-    digitalWrite(Relay_1, RELAY_ON); // qtr
-    delay(SHORT_DELAY);
-    delay(SHORT_DELAY);
-    delay(SHORT_DELAY); // qtr rest
-    delay(SHORT_DELAY);
-    digitalWrite(Relay_1, RELAY_OFF);
-    delay(SHORT_DELAY); // qtr rest
-    delay(SHORT_DELAY);
-    digitalWrite(Relay_1, RELAY_ON);
-    delay(SHORT_DELAY); // qtr rest
-    delay(SHORT_DELAY);
-    digitalWrite(Relay_1, RELAY_OFF);
-    delay(SHORT_DELAY); // qtr rest
-        delay(SHORT_DELAY);
+  relayOnOff(Relay_1, SHORT_DELAY, 2);
+  delay(SHORT_DELAY);
+  relayOnOff(Relay_1);
+  delay(SHORT_DELAY);
+  delay(SHORT_DELAY);
+  relayOnOff(Relay_1, SHORT_DEALY, 4);
+  delay(SHORT_DELAY); // qtr rest
+  delay(SHORT_DELAY);
+  relayOnOff(Relay_1, SHORT_DELAY, 2);
 
-delay(MED_DELAY);
+  delay(SHORT_DELAY); // qtr rest
+  delay(SHORT_DELAY);
 
-for(int i=0;i<5;i++) {
-    digitalWrite(Relay_1, RELAY_ON);
+  delay(MED_DELAY);
+
+  for(int i=0;i<5;i++)
+  {
+    relayOnOff(Relay_1, MED_DELAY);
     delay(MED_DELAY);
-    digitalWrite(Relay_1, RELAY_OFF);
-    delay(MED_DELAY);
-  };
-
-
-
+  }
 }
 
-void all_off() {
-
-// shut them all off
-
-  digitalWrite(Relay_1, RELAY_OFF);
-  digitalWrite(Relay_2, RELAY_OFF);
-  digitalWrite(Relay_3, RELAY_OFF);
-  digitalWrite(Relay_4, RELAY_OFF);  
-  digitalWrite(Relay_5, RELAY_OFF);
-  digitalWrite(Relay_6, RELAY_OFF);
-  digitalWrite(Relay_7, RELAY_OFF);
-  digitalWrite(Relay_8, RELAY_OFF);  
-
+void all_off()
+{
+  // shut them all off
+  for (auto relay : relays)
+  {
+    digitalWrite(relay, RELAY_OFF);
+  }
 }
 
-void cycle_up() {
-    
-for(int i=2;i<9;i++) {
-    digitalWrite(i, RELAY_OFF);
+void cycle_up()
+{
+  for (auto relay : relays)
+  {
+    digitalWrite(relay, RELAY_OFF);
     delay(SHORT_DELAY);
-    digitalWrite(i, RELAY_ON);
+    digitalWrite(relay, RELAY_ON);
     delay(SHORT_DELAY);
-  };
-
+  }
 }
 
-void cycle_down() {
-
-  for(int i=9;i<2;i--) {
-    digitalWrite(i, RELAY_ON);
-    delay(SHORT_DELAY);
-    digitalWrite(i, RELAY_OFF);
+void cycle_down()
+{
+  for (auto relay : relays)
+  {
+    relayOnOff(relay);
     delay(SHORT_DELAY);
   };
-
-/*
-  digitalWrite(Relay_1, RELAY_OFF);// set the Relay OFF
-  delay(SHORT_DELAY);
-  digitalWrite(Relay_2, RELAY_OFF);// set the Relay OFF
-  delay(SHORT_DELAY);
-  digitalWrite(Relay_3, RELAY_OFF);// set the Relay OFF
-  delay(SHORT_DELAY);
-  digitalWrite(Relay_4, RELAY_OFF);// set the Relay OFF
-  delay(SHORT_DELAY);
-  digitalWrite(Relay_5, RELAY_OFF);// set the Relay ON
-  delay(SHORT_DELAY);
-  digitalWrite(Relay_6, RELAY_OFF);// set the Relay ON
-  delay(SHORT_DELAY);
-  digitalWrite(Relay_7, RELAY_OFF);// set the Relay ON
-*/
-
 }
 
 void loop() {
@@ -167,42 +125,36 @@ void loop() {
 
   all_off();
 
- for(int relaypin=2;relaypin<9;relaypin++) { // only the 2nd through 7th chevrons should cycle
+ for(int relay = Relay_1; relay < Relay_8; relay++) { // only the 2nd through 7th chevrons should cycle
 
-    digitalWrite(Relay_1, RELAY_ON);
-    delay(SHORT_DELAY);
-    digitalWrite(Relay_1, RELAY_OFF);
+    relayOnOff(Relay_1);
     delay(SHORT_DELAY);
     
-    digitalWrite(relaypin, RELAY_ON);// lock the chevron
-    delay(SHORT_DELAY);
-    digitalWrite(relaypin, RELAY_OFF);// lock the chevron
-    delay(SHORT_DELAY);
-    digitalWrite(relaypin, RELAY_ON);// lock the chevron
+    relayOnOff(relay);
 
-    digitalWrite(Relay_1, RELAY_ON);
     delay(SHORT_DELAY);
-    digitalWrite(Relay_1, RELAY_OFF);
+    digitalWrite(relay, RELAY_ON);// lock the chevron
+
+    relayOnOff(Relay_1);
     delay(SHORT_DELAY);
  
     Serial.println("chevron ");
-    Serial.println(relaypin);
-    Serial.println(" locked! ");
+    Serial.println(relay);
+    Serial.println(relay != 8 ? " encoded" : " locked! ");
 
-    delay(MED_DELAY);              // wait for a second 
-
-  };
+    delay(MED_DELAY);  // wait for a second 
+  }
 
   cycle_up();
 
-  delay(LONG_DELAY);              // wait see all relays OFF  
+  delay(LONG_DELAY);   // wait see all relays OFF  
 
   Serial.println("losing signal...!");
 
   cycle_down();
   
-  delay(LONG_DELAY);              // wait see all relays OFF  
+  delay(LONG_DELAY);    // wait see all relays OFF  
   
-    Serial.println("connection lost...!");
+  Serial.println("connection lost...!");
   
 }
