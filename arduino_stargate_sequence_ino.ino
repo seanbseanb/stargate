@@ -13,7 +13,6 @@
 #define MED_DELAY 1000
 #define LONG_DELAY 20000
 
-
 /*-----( Declare objects )-----*/
 /*-----( Declare Variables )-----*/
 #define Relay_1  2  // Arduino Digital I/O pin number
@@ -26,11 +25,12 @@
 #define Relay_8  9
 
 static int relays[8] = {
-  Relay_1, Relay_2, Relay_
-
+  Relay_1, Relay_2, Relay_3, Relay_4,
+  Relay_5, Relay_6, Relay_7, Relay_8
+};
 
 #include <Serial.h> 
-//int byte = 33; 
+
 void relayOnOff(int relay, int delay = SHORT_DELAY, delayCount = 1)
 {
   digitalWrite(relay, RELAY_ON); // qtr
@@ -51,7 +51,7 @@ void setup()
     pinMode(relay, OUTPUT);   
   }   
 
-  delay(1000); //Check that all relays are inactive at Reset
+  delay(MED_DELAY); //Check that all relays are inactive at Reset
 
   Serial.begin(9600);
   while (!Serial)
@@ -63,8 +63,7 @@ void setup()
 
   delay(MED_DELAY);
 
-// shave and a haircut
-
+  // shave and a haircut.
   relayOnOff(Relay_1, SHORT_DELAY, 2);
   delay(SHORT_DELAY);
   relayOnOff(Relay_1);
@@ -80,7 +79,7 @@ void setup()
 
   delay(MED_DELAY);
 
-  for(int i=0;i<5;i++)
+  for(int i=0; i<5; i++)
   {
     relayOnOff(Relay_1, MED_DELAY);
     delay(MED_DELAY);
@@ -119,14 +118,15 @@ void cycle_down()
 void loop() {
   // put your main code here, to run repeatedly:
 
-// ok, so the main (top) chevron flashes every time one of the other chevrons
-// is set, then it's 8 seconds or so til the next one fires. 
+  // ok, so the main (top) chevron flashes every time one of the other chevrons
+  // is set, then it's 8 seconds or so til the next one fires. 
   Serial.println("hello, world!");
 
   all_off();
 
- for(int relay = Relay_1; relay < Relay_8; relay++) { // only the 2nd through 7th chevrons should cycle
-
+  // only the 2nd through 7th chevrons should cycle
+  for(int relay = Relay_1; relay < Relay_8; relay++)
+  {
     relayOnOff(Relay_1);
     delay(SHORT_DELAY);
     
@@ -140,7 +140,7 @@ void loop() {
  
     Serial.println("chevron ");
     Serial.println(relay);
-    Serial.println(relay != 8 ? " encoded" : " locked! ");
+    Serial.println(relay != Relay_7 ? " encoded" : " locked! ");
 
     delay(MED_DELAY);  // wait for a second 
   }
@@ -156,5 +156,4 @@ void loop() {
   delay(LONG_DELAY);    // wait see all relays OFF  
   
   Serial.println("connection lost...!");
-  
 }
