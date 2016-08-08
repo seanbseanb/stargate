@@ -1,5 +1,6 @@
 #!/bin/sh
 #set -x
+# moved to git...
 #<name> disa-findFiles
 #<desc> Shared Script for Finding Files
 #<type> Sensor
