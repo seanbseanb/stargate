@@ -7771,7 +7771,7 @@
         "description" : "Level-I :Disable System Accounts",
         "referenceNumber" : "CCE-4060-0",
         "notes" : "CCE reference : CCE-4060-0\r\nThere are a number of accounts provided with the Red Hat that are used to manage applications and are not intended to provide an interactive shell.",
-        "ruleExpression" : "\nif\n   ??CONFIGURATION_LEVELS?? equals \"ALL\"  OR\n   ??CONFIGURATION_LEVELS?? equals \"LEVEL-I\"\nthen\n   \"Extended Object Entry:7.1 Disable System Accounts//UNIX_SRR_Result/status\".\"Value1 as String (All OS)\" equals \"finding\"\nend\n",
+        "ruleExpression" : "\nif\n   ??CONFIGURATION_LEVELS?? equals \"ALL\"  OR\n   ??CONFIGURATION_LEVELS?? equals \"LEVEL-I\"\nthen\n   \"Extended Object Entry:7.1 Disable System Accounts//UNIX_SRR_Result/status\".\"Value1 as String (All OS)\" equals \"Not a Finding\"\nend\n",
         "commentOut" : false,
         "remediation" : {
           "repairOption" : "REMEDIATE",
